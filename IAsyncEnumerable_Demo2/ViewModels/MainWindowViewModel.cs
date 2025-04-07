@@ -38,7 +38,7 @@ public class MainWindowViewModel : ViewModelBase
             try
             {
                 var numbers = Core.Numbers.GetNumbersAsync(Minimum, Maximum, _cancellationTokenSource.Token);
-                await WriteNumbers(numbers, progress);
+                await WriteNumbers(numbers, progress, _cancellationTokenSource.Token);
             }
             catch (OperationCanceledException e)
             {
@@ -52,11 +52,11 @@ public class MainWindowViewModel : ViewModelBase
         });
     }
     
-    private async Task WriteNumbers(IAsyncEnumerable<int> numbers, IProgress<int>? progress = null)
+    private async Task WriteNumbers(IAsyncEnumerable<int> numbers, IProgress<int>? progress = null, CancellationToken cancellationToken = default)
     {
         Numbers.Clear();
         
-        await foreach (var number in numbers)
+        await foreach (var number in numbers.WithCancellation(cancellationToken).ConfigureAwait(false))
         {
             Numbers.Add(number);
             progress?.Report(number);
