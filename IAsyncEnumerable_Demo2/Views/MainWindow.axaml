@@ -1,0 +1,35 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:IAsyncEnumerable_Demo2.ViewModels"
+        
+        x:Class="IAsyncEnumerable_Demo2.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        
+        Icon="/Assets/avalonia-logo.ico"
+        Title="IAsyncEnumerable_Demo2">
+
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Start"
+                    Command="{Binding StartCommand}"/>
+            <Button Content="Stop"
+                    Command="{Binding StopCommand}"/>
+        </StackPanel>
+        
+        <Grid>
+            <ProgressBar Height="20"
+                         Minimum="{Binding Minimum}"
+                         Maximum="{Binding Maximum}"
+                         Value="{Binding Progress}"/>
+            <TextBlock Text="{Binding Progress}" />
+        </Grid>
+        
+        <ListBox ItemsSource="{Binding Numbers}"/>
+        
+        <TextBlock Text="{Binding Output}"/>
+    </StackPanel>
+</Window>
